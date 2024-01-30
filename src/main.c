@@ -1,20 +1,32 @@
 #include <stdlib.h>
 #include <stdio.h>
-
-#define TESTSIZE 10000
+#include <string.h>
 
 int main(void)
 {
 	char *ptr;
+	int i;
 
-	ptr = malloc(TESTSIZE);
-	if (!ptr) {
-		perror("malloc");
-		return EXIT_FAILURE;
+
+	for (i = 0; i < 10; i++) {
+		size_t s = 2 << (10 + i);
+		printf("Allocating %lld bytes on heap...", (long long) s);
+
+		ptr = malloc(s);
+		if (!ptr) {
+			perror("malloc");
+			return EXIT_FAILURE;
+		}
+		printf("done!\n");
+
+		printf("Seting the buffer to 0...");
+		memset(ptr, 0, s);
+		printf("done!\n");
+
+		printf("Freeing the memory...");
+		free(ptr);
+		printf("done!\n");
 	}
-
-	memset(ptr, 0, TESTSIZE);
-	free(ptr);
 
 	return 0;
 }
